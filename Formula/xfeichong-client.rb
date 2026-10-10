@@ -1,19 +1,21 @@
 class XfeichongClient < Formula
   desc "xfeichong 内网穿透客户端：本地 TCP 转发到 NAT 映射地址"
   homepage "https://xfeichong.com"
-  url "https://raw.githubusercontent.com/sayn443/homebrew-xfeichong/main/tarball/xfeichong-client-1.0.0.tar.gz"
-  sha256 "1fc876b9596e190529bd538efeabf458ae763613e875267ab83382314ca19456"
+  url "https://raw.githubusercontent.com/sayn443/homebrew-xfeichong/main/tarball/xfeichong-client-1.0.1.tar.gz"
+  sha256 "f79bcd141d78bd028baedb110085698eabc55a2534186245e1082ef8b86e42f0"
   license "MIT"
-  version "1.0.0"
+  version "1.0.1"
 
-  depends_on "python@3.14"
+  # 纯标准库脚本，直接用 macOS 自带的 python3（/usr/bin/python3，CLT 附带），
+  # 不引入 brew 的 python@3.14 及其 6 个依赖（ca-certificates/openssl/readline/sqlite/xz）
+  uses_from_macos "python"
 
   def install
     libexec.install "natmap_client.py", "config.json"
-    # 通过包装脚本固定使用 brew 的 python，避免依赖系统 python
+    # 使用系统 python3；brew 用户必然已装 CLT（brew 本身依赖它），/usr/bin/python3 必然存在
     (bin/"xfeichong-client").write <<~EOS
       #!/bin/bash
-      exec "#{Formula["python@3.14"].opt_bin}/python3" -u "#{libexec}/natmap_client.py" "$@"
+      exec /usr/bin/python3 -u "#{libexec}/natmap_client.py" "$@"
     EOS
   end
 
@@ -47,6 +49,7 @@ class XfeichongClient < Formula
       更换 appkey 后无需重启，客户端会自动接管
       启动服务: brew services start xfeichong-client
       查看日志: tail -f #{var}/log/xfeichong-client.log
+      依赖说明: 使用 macOS 自带 python3（需 Xcode 命令行工具；若缺失执行 xcode-select --install）
     EOS
   end
 end
