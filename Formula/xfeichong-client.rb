@@ -2,7 +2,7 @@ class XfeichongClient < Formula
   desc "xfeichong 内网穿透客户端：本地 TCP 转发到 NAT 映射地址"
   homepage "https://xfeichong.com"
   url "https://raw.githubusercontent.com/sayn443/homebrew-xfeichong/main/tarball/xfeichong-client-1.0.1.tar.gz"
-  sha256 "a16bff22446fe124e070e8d0599bef3df3688225865dbd4df7f8a9ca8eda286f"
+  sha256 "775b562f02319b7be5884fa85abafbf44ad2eda15d587b66a98dff37dd58f032"
   license "MIT"
   version "1.0.1"
 
